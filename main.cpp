@@ -29,6 +29,16 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
 
     // generate bipartite graph
     if (bipartite) {
+        for (int row = 0; row < (size/2); row++) {
+            for (int col = (size/2); col < size; col++) {
+
+                // 50% chance edge is created
+                if (rand() % 2) {
+                    graph.createEdge(row, col);
+                    graph.createEdge(col, row);
+                }
+            }
+        }
     }
 
     // generate non-bipartite graph
@@ -81,14 +91,24 @@ int main() {
     double length;
     vector<int> times(6, 0);
     vector<AdjacencyMatrix> graphs;
+    vector<AdjacencyMatrix> bi_graphs;
     srand((unsigned)time(0));
 
+    // generate normal graphs
     graphs.push_back(generateGraph(8, false));
     graphs.push_back(generateGraph(64, false));
     graphs.push_back(generateGraph(256, false));
     graphs.push_back(generateGraph(512, false));
     graphs.push_back(generateGraph(1024, false));
     graphs.push_back(generateGraph(2048, false));
+
+    // generate biparte graphs
+    bi_graphs.push_back(generateGraph(8, true));
+    bi_graphs.push_back(generateGraph(64, true));
+    bi_graphs.push_back(generateGraph(256, true));
+    bi_graphs.push_back(generateGraph(512, true));
+    bi_graphs.push_back(generateGraph(1024, true));
+    bi_graphs.push_back(generateGraph(2048, true));
 
     // runs each graph and times how long to find triangle or not
     for (AdjacencyMatrix graph : graphs) {
@@ -98,6 +118,10 @@ int main() {
         times.push_back(length);
     }
 
-
-
+    for (AdjacencyMatrix graph : bi_graphs) {
+        start = clock();
+        containsTriangle(graph);
+        length = (clock() - start) / (double)CLOCKS_PER_SEC;
+        times.push_back(length);
+    }
 }
