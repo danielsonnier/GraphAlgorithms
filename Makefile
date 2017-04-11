@@ -1,4 +1,4 @@
-CFLAGS = -O
+CFLAGS = -O -std=c++11
 CC = g++
 
 Algo: main.o AdjacencyMatrix.o

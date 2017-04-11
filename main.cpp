@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <cstdlib>
 #include "AdjacencyMatrix.h"
 
 using namespace std;
@@ -26,6 +27,24 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
 
     AdjacencyMatrix graph(size);
 
+    // generate bipartite graph
+    if (bipartite) {
+    }
+
+    // generate non-bipartite graph
+    else {
+        for (int row = 0; row < size - 1; row++) {
+            for (int col = row + 1; col < size; col++) {
+
+                // 50% chance edge is created
+                if (rand() % 2) {
+                    graph.createEdge(row, col);
+                    graph.createEdge(col, row);
+                }
+            }
+        }
+    }
+
     return graph;
 }
 
@@ -33,29 +52,26 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
 // graph: checks this for a triangle between vertices
 bool containsTriangle(AdjacencyMatrix graph) {
 
-    // for each element in 2d adjacnecy matrix ( this is an edge)
-    // for each vertex in the graph, check if theres an edge from it to both
-    // vertes of the above edge
-    // if so return true
+    int size = graph.getSize();
 
-
-    
-    /*
     // loops through every edge in graph
-    for (edge in graph) {
+    for (int row = 0; row < size - 1; row++) {
+        for (int col = row + 1; col < size; col++) {
+            if (graph.isEdge(row, col)) { 
+                    
+                // loops through every vertex in graph
+                for (int vertex = 0; vertex < size; vertex++) {
 
-        // loops through every vertex in graph
-        for (vertex in graph) {
-
-            // checks if vertex has edge to both vertices in first edge
-            if ([vertex][edge1] && [vertex][edge2])
-                return true;
+                    // check if vertex has edge to vertices in first edge
+                    if (graph.isEdge(row, vertex) && graph.isEdge(col, vertex)) {
+                        return true;
+                    }
+                }
             }
         }
     }
 
     return false;
-    */
 }
 
 
@@ -63,18 +79,25 @@ int main() {
 
     clock_t start;
     double length;
+    vector<int> times(6, 0);
+    vector<AdjacencyMatrix> graphs;
+    srand((unsigned)time(0));
 
-    // non-bipartite graphs
-    //AdjacencyMatrix graph8, graph64, graph256, graph512, graph1024, graph2048;
-    // bipartite graphs
-    //AdjacencyMatrix bi_graph8, bi_graph64, bi_graph256, bi_graph512, bi_graph1024, bi_graph2048;
+    graphs.push_back(generateGraph(8, false));
+    graphs.push_back(generateGraph(64, false));
+    graphs.push_back(generateGraph(256, false));
+    graphs.push_back(generateGraph(512, false));
+    graphs.push_back(generateGraph(1024, false));
+    graphs.push_back(generateGraph(2048, false));
 
-    AdjacencyMatrix bi_graph8 = generateGraph(8, false);
-    
-    start = clock();
-    // run stuff here
-    length = (clock() - start) / (double)CLOCKS_PER_SEC;
+    // runs each graph and times how long to find triangle or not
+    for (AdjacencyMatrix graph : graphs) {
+        start = clock();
+        containsTriangle(graph);
+        length = (clock() - start) / (double)CLOCKS_PER_SEC;
+        times.push_back(length);
+    }
 
-    cout << "test" << endl;
+
 
 }
