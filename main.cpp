@@ -89,7 +89,8 @@ int main() {
 
     clock_t start;
     double length;
-    vector<int> times(6, 0);
+    vector<int> times;
+    vector<int> bi_times;
     vector<AdjacencyMatrix> graphs;
     vector<AdjacencyMatrix> bi_graphs;
     srand((unsigned)time(0));
@@ -114,14 +115,23 @@ int main() {
     for (AdjacencyMatrix graph : graphs) {
         start = clock();
         containsTriangle(graph);
-        length = (clock() - start) / (double)CLOCKS_PER_SEC;
+        length = (clock() - start);
         times.push_back(length);
     }
 
     for (AdjacencyMatrix graph : bi_graphs) {
         start = clock();
         containsTriangle(graph);
-        length = (clock() - start) / (double)CLOCKS_PER_SEC;
-        times.push_back(length);
+        length = (clock() - start);
+        bi_times.push_back(length);
     }
+
+    cout << "Normal graph times: " << endl;
+    for (int time : times)
+        cout << time << " ";
+
+    cout << "\n\nBipartite graph times :" << endl;
+    for (int time : bi_times)
+        cout << time << " ";
+    cout << endl;
 }
