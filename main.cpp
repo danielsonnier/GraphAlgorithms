@@ -1,5 +1,4 @@
 // Main.cpp
-// Implement triangle algorithim here and run it through adjacency matrices
 
 #include <iostream>
 #include <ctime>
@@ -8,8 +7,9 @@
 
 using namespace std;
 
-// size: number of vertices
-// bipartite: generate a bipartite graph if true
+/* Paramaters: Size of graph, whether or not graph is bipartitek
+ * Returns: AdjacencyMatrix representing graph
+ */
 AdjacencyMatrix generateGraph(int size, bool bipartite) {
 
     AdjacencyMatrix graph(size);
@@ -46,7 +46,31 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
 }
 
 
-// graph: checks this for a triangle between vertices
+/* Paramaters: Graph
+ * Returns: Size of maximum independent set in graph
+ */
+int sizeOfMaxSet(AdjacencyMatrix graph) {
+    int size = 0;
+
+    while (graph.getSize() != 0) {
+        for (int i = 1; i < graph.getSize(); i++) {
+            if (graph.isEdge(0, i)) {
+                    graph.removeVertex(i); 
+                    i--;
+            }
+        }
+
+        graph.removeVertex(0);
+        size++;
+    }
+
+    return size;
+}
+
+
+/* Paramaters: Graph
+ * Returns: Whether or not graph contains triangle of vertices
+ */
 bool containsTriangle(AdjacencyMatrix graph) {
 
     int size = graph.getSize();
@@ -76,6 +100,29 @@ int main() {
 
     clock_t start;
     double length;
+    srand((unsigned)time(0));
+
+    // FIND MAXIMUM INDEPENDENT SET
+    vector<AdjacencyMatrix> graphs;
+    graphs.push_back(generateGraph(8, false));
+    graphs.push_back(generateGraph(64, false));
+    graphs.push_back(generateGraph(256, false));
+    graphs.push_back(generateGraph(512, false));
+    graphs.push_back(generateGraph(1024, false));
+    graphs.push_back(generateGraph(2048, false));
+    graphs.push_back(generateGraph(4096, false));
+
+    for (AdjacencyMatrix graph : graphs) {
+        cout << "Graph size: " << graph.getSize() << endl;
+        cout << "Max independent set: " << sizeOfMaxSet(graph) << endl;
+        cout << endl;
+    }
+
+
+    /* 
+    // FIND TRIANGLE
+    clock_t start;
+    double length;
     vector<int> times;
     vector<int> bi_times;
     vector<AdjacencyMatrix> graphs;
@@ -102,14 +149,14 @@ int main() {
     for (AdjacencyMatrix graph : graphs) {
         start = clock();
         containsTriangle(graph);
-        length = (clock() - start);
+        length = clock() - start;
         times.push_back(length);
     }
 
     for (AdjacencyMatrix graph : bi_graphs) {
         start = clock();
         containsTriangle(graph);
-        length = (clock() - start);
+        length = clock() - start;
         bi_times.push_back(length);
     }
 
@@ -121,4 +168,5 @@ int main() {
     for (int time : bi_times)
         cout << time << " ";
     cout << endl;
+    */
 }

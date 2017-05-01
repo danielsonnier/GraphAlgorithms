@@ -13,6 +13,7 @@ class AdjacencyMatrix {
         AdjacencyMatrix(int n);
         void createEdge(int i, int j);
         bool isEdge(int i, int j);
+        void removeVertex(int i);
         int getSize();
         void printMatrix();
 };

@@ -16,6 +16,16 @@ bool AdjacencyMatrix::isEdge(int i, int j) {
     return matrix[i][j];
 }
 
+void AdjacencyMatrix::removeVertex(int i) {
+
+    matrix.erase(matrix.begin() + i);
+
+    for (int j = 0; j < matrix.size(); j++) 
+        matrix[j].erase(matrix[j].begin() + i);
+
+    size--;
+}
+
 int AdjacencyMatrix::getSize() {
     return size;
 }
