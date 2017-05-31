@@ -146,19 +146,25 @@ int main() {
 
     // FIND MAXIMUM INDEPENDENT SET USING DYNAMIC
     vector<AdjacencyMatrix> graphs;
-    graphs.push_back(generateGraph(3, false));
-    graphs.push_back(generateGraph(5, false));
-    graphs.push_back(generateGraph(8, false));
-    graphs.push_back(generateGraph(10, false));
-    //graphs.push_back(generateGraph(512, false));
-    //graphs.push_back(generateGraph(1024, false));
-    //graphs.push_back(generateGraph(2048, false));
-    //graphs.push_back(generateGraph(4096, false));
+    graphs.push_back(generateGraph(40, false));
+    graphs.push_back(generateGraph(80, false));
+    graphs.push_back(generateGraph(120, false));
+    graphs.push_back(generateGraph(160, false));
+    graphs.push_back(generateGraph(200, false));
+    graphs.push_back(generateGraph(240, false));
+    graphs.push_back(generateGraph(280, false));
+    graphs.push_back(generateGraph(320, false));
+    graphs.push_back(generateGraph(360, false));
+    graphs.push_back(generateGraph(400, false));
+    graphs.push_back(generateGraph(440, false));
+    graphs.push_back(generateGraph(480, false));
+    graphs.push_back(generateGraph(520, false));
+    graphs.push_back(generateGraph(560, false));
 
     for (AdjacencyMatrix graph : graphs) {
         cout << "Graph size: " << graph.getSize() << endl;
-        cout << "Graph: " << endl;
-        cout << "Max independent set: " << sizeOfMaxSet(graph, false) << endl;
+        cout << "MIS (Greedy): " << sizeOfMaxSet(graph, true) << endl;
+        cout << "MIS (Dynamic): " << sizeOfMaxSet(graph, false) << endl;
         cout << endl;
     }
 
