@@ -47,23 +47,65 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
 
 
 /* Paramaters: Graph
+ * Returns: Graph recursively finding max set
+ */
+AdjacencyMatrix maxSetDynamic(AdjacencyMatrix graph) {
+    if (graph.getSize() == 0) 
+        return graph;
+
+    for (int i = 0; i < graph.getSize(); i++) {
+
+        // S1
+        AdjacencyMatrix temp = graph;
+        for (int j = graph.getSize() - 1; j > 0; j--) {
+            if (graph.isEdge(i, j))
+                temp.removeVertex(j);
+        }
+        temp.removeVertex(i);
+
+        AdjacencyMatrix S1 = maxSetDynamic(temp);
+        S1.addVertex();
+        
+        if (graph.degree(i) == 0 || graph.degree(i) == 1)
+            return S1;
+
+        // S2
+        AdjacencyMatrix temp2 = graph;
+        temp2.removeVertex(i);
+        AdjacencyMatrix S2 = maxSetDynamic(temp2);
+
+        if (S2.getSize() > S1.getSize())
+            return S2;
+        else
+            return S1;
+    }
+}
+
+
+/* Paramaters: Graph, Greedy/Dynamic
  * Returns: Size of maximum independent set in graph
  */
-int sizeOfMaxSet(AdjacencyMatrix graph) {
+int sizeOfMaxSet(AdjacencyMatrix graph, bool greedy) {
     int size = 0;
 
-    while (graph.getSize() != 0) {
-        for (int i = 1; i < graph.getSize(); i++) {
-            if (graph.isEdge(0, i)) {
-                    graph.removeVertex(i); 
-                    i--;
+    if (greedy) {
+        while (graph.getSize() != 0) {
+            for (int i = 1; i < graph.getSize(); i++) {
+                if (graph.isEdge(0, i)) {
+                        graph.removeVertex(i); 
+                        i--;
+                }
             }
-        }
 
-        graph.removeVertex(0);
-        size++;
+            graph.removeVertex(0);
+            size++;
+        }
     }
 
+    else {
+        size = maxSetDynamic(graph).getSize();
+    }
+    
     return size;
 }
 
@@ -102,19 +144,21 @@ int main() {
     double length;
     srand((unsigned)time(0));
 
-    // FIND MAXIMUM INDEPENDENT SET
+    // FIND MAXIMUM INDEPENDENT SET USING DYNAMIC
     vector<AdjacencyMatrix> graphs;
+    graphs.push_back(generateGraph(3, false));
+    graphs.push_back(generateGraph(5, false));
     graphs.push_back(generateGraph(8, false));
-    graphs.push_back(generateGraph(64, false));
-    graphs.push_back(generateGraph(256, false));
-    graphs.push_back(generateGraph(512, false));
-    graphs.push_back(generateGraph(1024, false));
-    graphs.push_back(generateGraph(2048, false));
-    graphs.push_back(generateGraph(4096, false));
+    graphs.push_back(generateGraph(10, false));
+    //graphs.push_back(generateGraph(512, false));
+    //graphs.push_back(generateGraph(1024, false));
+    //graphs.push_back(generateGraph(2048, false));
+    //graphs.push_back(generateGraph(4096, false));
 
     for (AdjacencyMatrix graph : graphs) {
         cout << "Graph size: " << graph.getSize() << endl;
-        cout << "Max independent set: " << sizeOfMaxSet(graph) << endl;
+        cout << "Graph: " << endl;
+        cout << "Max independent set: " << sizeOfMaxSet(graph, false) << endl;
         cout << endl;
     }
 

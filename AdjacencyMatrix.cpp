@@ -16,14 +16,30 @@ bool AdjacencyMatrix::isEdge(int i, int j) {
     return matrix[i][j];
 }
 
-void AdjacencyMatrix::removeVertex(int i) {
+void AdjacencyMatrix::addVertex() {
+    matrix.resize(matrix.size() + 1, std::vector< bool >(matrix.size() + 1));
 
+    size++;
+}
+
+void AdjacencyMatrix::removeVertex(int i) {
     matrix.erase(matrix.begin() + i);
 
     for (int j = 0; j < matrix.size(); j++) 
         matrix[j].erase(matrix[j].begin() + i);
 
     size--;
+}
+
+int AdjacencyMatrix::degree(int i) {
+    int degree = 0;
+
+    for (int j = 0; j < matrix.size(); j++) {
+        if (matrix[i][j])
+            degree++;
+    }
+
+    return degree;
 }
 
 int AdjacencyMatrix::getSize() {
