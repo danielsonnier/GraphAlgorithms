@@ -10,17 +10,22 @@ using namespace std;
 /* Paramaters: Size of graph, whether or not graph is bipartitek
  * Returns: AdjacencyMatrix representing graph
  */
-AdjacencyMatrix generateGraph(int size, bool bipartite) {
+AdjacencyMatrix generateGraph(int size, bool bipartite)
+{
 
     AdjacencyMatrix graph(size);
 
     // generate bipartite graph
-    if (bipartite) {
-        for (int row = 0; row < (size/2); row++) {
-            for (int col = (size/2); col < size; col++) {
+    if (bipartite)
+    {
+        for (int row = 0; row < (size / 2); row++)
+        {
+            for (int col = (size / 2); col < size; col++)
+            {
 
                 // 50% chance edge is created
-                if (rand() % 2) {
+                if (rand() % 2)
+                {
                     graph.createEdge(row, col);
                     graph.createEdge(col, row);
                 }
@@ -29,12 +34,16 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
     }
 
     // generate non-bipartite graph
-    else {
-        for (int row = 0; row < size - 1; row++) {
-            for (int col = row + 1; col < size; col++) {
+    else
+    {
+        for (int row = 0; row < size - 1; row++)
+        {
+            for (int col = row + 1; col < size; col++)
+            {
 
                 // 50% chance edge is created
-                if (rand() % 2) {
+                if (rand() % 2)
+                {
                     graph.createEdge(row, col);
                     graph.createEdge(col, row);
                 }
@@ -49,15 +58,18 @@ AdjacencyMatrix generateGraph(int size, bool bipartite) {
 /* Paramaters: Graph
  * Returns: Graph recursively finding max set
  */
-AdjacencyMatrix maxSetDynamic(AdjacencyMatrix graph) {
-    if (graph.getSize() == 0) 
+AdjacencyMatrix maxSetDynamic(AdjacencyMatrix graph)
+{
+    if (graph.getSize() == 0)
         return graph;
 
-    for (int i = 0; i < graph.getSize(); i++) {
+    for (int i = 0; i < graph.getSize(); i++)
+    {
 
         // S1
         AdjacencyMatrix temp = graph;
-        for (int j = graph.getSize() - 1; j > 0; j--) {
+        for (int j = graph.getSize() - 1; j > 0; j--)
+        {
             if (graph.isEdge(i, j))
                 temp.removeVertex(j);
         }
@@ -65,7 +77,7 @@ AdjacencyMatrix maxSetDynamic(AdjacencyMatrix graph) {
 
         AdjacencyMatrix S1 = maxSetDynamic(temp);
         S1.addVertex();
-        
+
         if (graph.degree(i) == 0 || graph.degree(i) == 1)
             return S1;
 
@@ -85,15 +97,20 @@ AdjacencyMatrix maxSetDynamic(AdjacencyMatrix graph) {
 /* Paramaters: Graph, Greedy/Dynamic
  * Returns: Size of maximum independent set in graph
  */
-int sizeOfMaxSet(AdjacencyMatrix graph, bool greedy) {
+int sizeOfMaxSet(AdjacencyMatrix graph, bool greedy)
+{
     int size = 0;
 
-    if (greedy) {
-        while (graph.getSize() != 0) {
-            for (int i = 1; i < graph.getSize(); i++) {
-                if (graph.isEdge(0, i)) {
-                        graph.removeVertex(i); 
-                        i--;
+    if (greedy)
+    {
+        while (graph.getSize() != 0)
+        {
+            for (int i = 1; i < graph.getSize(); i++)
+            {
+                if (graph.isEdge(0, i))
+                {
+                    graph.removeVertex(i);
+                    i--;
                 }
             }
 
@@ -102,10 +119,11 @@ int sizeOfMaxSet(AdjacencyMatrix graph, bool greedy) {
         }
     }
 
-    else {
+    else
+    {
         size = maxSetDynamic(graph).getSize();
     }
-    
+
     return size;
 }
 
@@ -113,20 +131,26 @@ int sizeOfMaxSet(AdjacencyMatrix graph, bool greedy) {
 /* Paramaters: Graph
  * Returns: Whether or not graph contains triangle of vertices
  */
-bool containsTriangle(AdjacencyMatrix graph) {
+bool containsTriangle(AdjacencyMatrix graph)
+{
 
     int size = graph.getSize();
 
     // loops through every edge in graph
-    for (int row = 0; row < size - 1; row++) {
-        for (int col = row + 1; col < size; col++) {
-            if (graph.isEdge(row, col)) { 
-                    
+    for (int row = 0; row < size - 1; row++)
+    {
+        for (int col = row + 1; col < size; col++)
+        {
+            if (graph.isEdge(row, col))
+            {
+
                 // loops through every vertex in graph
-                for (int vertex = 0; vertex < size; vertex++) {
+                for (int vertex = 0; vertex < size; vertex++)
+                {
 
                     // check if vertex has edge to vertices in first edge
-                    if (graph.isEdge(row, vertex) && graph.isEdge(col, vertex)) {
+                    if (graph.isEdge(row, vertex) && graph.isEdge(col, vertex))
+                    {
                         return true;
                     }
                 }
@@ -138,7 +162,8 @@ bool containsTriangle(AdjacencyMatrix graph) {
 }
 
 
-int main() {
+int main()
+{
 
     clock_t start;
     double length;
@@ -161,7 +186,8 @@ int main() {
     graphs.push_back(generateGraph(520, false));
     graphs.push_back(generateGraph(560, false));
 
-    for (AdjacencyMatrix graph : graphs) {
+    for (AdjacencyMatrix graph : graphs)
+    {
         cout << "Graph size: " << graph.getSize() << endl;
         cout << "MIS (Greedy): " << sizeOfMaxSet(graph, true) << endl;
         cout << "MIS (Dynamic): " << sizeOfMaxSet(graph, false) << endl;
@@ -169,7 +195,7 @@ int main() {
     }
 
 
-    /* 
+    /*
     // FIND TRIANGLE
     clock_t start;
     double length;
