@@ -172,19 +172,6 @@ int main()
     // FIND MAXIMUM INDEPENDENT SET USING DYNAMIC
     vector<AdjacencyMatrix> graphs;
     graphs.push_back(generateGraph(40, false));
-    graphs.push_back(generateGraph(80, false));
-    graphs.push_back(generateGraph(120, false));
-    graphs.push_back(generateGraph(160, false));
-    graphs.push_back(generateGraph(200, false));
-    graphs.push_back(generateGraph(240, false));
-    graphs.push_back(generateGraph(280, false));
-    graphs.push_back(generateGraph(320, false));
-    graphs.push_back(generateGraph(360, false));
-    graphs.push_back(generateGraph(400, false));
-    graphs.push_back(generateGraph(440, false));
-    graphs.push_back(generateGraph(480, false));
-    graphs.push_back(generateGraph(520, false));
-    graphs.push_back(generateGraph(560, false));
 
     for (AdjacencyMatrix graph : graphs)
     {
@@ -194,8 +181,6 @@ int main()
         cout << endl;
     }
 
-
-    /*
     // FIND TRIANGLE
     clock_t start;
     double length;
@@ -207,19 +192,9 @@ int main()
 
     // generate normal graphs
     graphs.push_back(generateGraph(8, false));
-    graphs.push_back(generateGraph(64, false));
-    graphs.push_back(generateGraph(256, false));
-    graphs.push_back(generateGraph(512, false));
-    graphs.push_back(generateGraph(1024, false));
-    graphs.push_back(generateGraph(2048, false));
 
     // generate biparte graphs
     bi_graphs.push_back(generateGraph(8, true));
-    bi_graphs.push_back(generateGraph(64, true));
-    bi_graphs.push_back(generateGraph(256, true));
-    bi_graphs.push_back(generateGraph(512, true));
-    bi_graphs.push_back(generateGraph(1024, true));
-    bi_graphs.push_back(generateGraph(2048, true));
 
     // runs each graph and times how long to find triangle or not
     for (AdjacencyMatrix graph : graphs) {
@@ -244,5 +219,4 @@ int main()
     for (int time : bi_times)
         cout << time << " ";
     cout << endl;
-    */
 }
